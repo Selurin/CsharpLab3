@@ -9,22 +9,45 @@ internal class Arr
 
     }
 
-    public void Arr1(int n, int m)
+    public Arr(int[,] matrix)
+    {
+        _matrix = matrix;
+    }
+
+    public Arr(int n, int m)
     {
         _matrix = new int[n, m];
-        Console.WriteLine($"Введите {n * m} чисел:");
+        Console.WriteLine($"Введите {n * m} чисел (или 'exit' для досрочного выхода):");
+        bool isExit = false;
 
         for (int j = 0; j < m; j++)
         {
             for (int i = n - 1; i >= 0; i--)
             {
-                _matrix[i, j] = int.Parse(Console.ReadLine());
+                string? input = Console.ReadLine()?.Trim().ToLower();
+
+                if (input == "exit" || input == "выход")
+                {
+                    Console.WriteLine("Ввод прерван пользователем.");
+                    isExit = true;
+                    break;
+                }
+
+                if (int.TryParse(input, out int val))
+                {
+                    _matrix[i, j] = val;
+                }
+                else
+                {
+                    Console.WriteLine($"Неверный ввод '{input}'. Ячейка [{i},{j}] осталась пустой (0).");
+                }
             }
+            if (isExit) break;
         }
         Print();
     }
 
-    public void Arr2(int n)
+    public Arr(int n)
     {
         _matrix = new int[n, n];
         int[] oddDigits = { 1, 3, 5, 7, 9 };
@@ -44,7 +67,7 @@ internal class Arr
         Print();
     }
 
-    public void Arr3(int n)
+    public Arr(int n, string pattern)
     {
         _matrix = new int[n, n];
 
@@ -70,15 +93,66 @@ internal class Arr
         Print();
     }
 
-    private void Print()
+    public void CalculateAndCount()
     {
+        if (_matrix == null)
+        {
+            Console.WriteLine("Матрица пуста! Сначала создайте массив.");
+            return;
+        }
+
         int rows = _matrix.GetLength(0);
         int cols = _matrix.GetLength(1);
+
+        double sumFirstCol = 0;
+        for (int i = 0; i < rows; i++)
+        {
+            sumFirstCol += _matrix[i, 0];
+        }
+        double avgFirstCol = sumFirstCol / rows;
+
+        Console.WriteLine($"\nСреднее арифметическое 1-го столбца: {avgFirstCol:F2}");
+
+        for (int j = 1; j < cols; j++)
+        {
+            int count = 0;
+            double prevAvg = 0;
+            double prevSum = 0;
+
+            for (int i = 0; i < rows; i++)
+            {
+                prevSum += _matrix[i, j - 1];
+            }
+            prevAvg = prevSum / rows;
+
+            for (int i = 0; i < rows; i++)
+            {
+                if (_matrix[i, j] > prevAvg)
+                {
+                    count++;
+                }
+            }
+
+            Console.WriteLine($"Столбец {j + 1}: {count} эл. > среднего столбца {j} ({prevAvg:F2})");
+        }
+    }
+
+    private void Print()
+    {
+        if (_matrix == null)
+        {
+            Console.WriteLine("Матрица пуста!");
+            return;
+        }
+
+        int rows = _matrix.GetLength(0);
+        int cols = _matrix.GetLength(1);
+
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                Console.Write(_matrix[i, j] + "\t");
+                Console.Write($"{_matrix[i, j],-6}");
             }
             Console.WriteLine();
         }

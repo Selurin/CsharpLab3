@@ -20,7 +20,6 @@
                     Console.WriteLine("2 - Массив 2 (n × n): Заполняется случайными четырёхзначными числами, состоящими только из нечётных цифр (1, 3, 5, 7, 9)");
                     Console.WriteLine("3 - Массив 3 (n × n): Заполнение по диагоналям");
 
-                    Arr arr = new Arr();
                     string? subchoice;
                     do
                     {
@@ -33,7 +32,7 @@
                             {
                                 if (TryReadInt("Введите число столбцов: ", out int m))
                                 {
-                                    arr.Arr1(n, m);
+                                    Arr arr = new Arr(n, m);
                                 }
                             }
                         }
@@ -41,7 +40,7 @@
                         {
                             if (TryReadInt("Введите размерность квадратной матрицы: ", out int n))
                             {
-                                arr.Arr2(n);
+                                Arr arr = new Arr(n);
                             }
                         }
 
@@ -49,7 +48,7 @@
                         {
                             if (TryReadInt("Введите размерность квадратной матрицы: ", out int n))
                             {
-                                arr.Arr3(n);
+                                Arr arr = new Arr(n, "pattern");
                             }
                         }
 
@@ -61,7 +60,8 @@
                     break;
 
                 case "2":
-                    //
+                    Arr arr2 = new Arr(5);
+                    arr2.CalculateAndCount();
                     break;
 
                 default:
@@ -76,7 +76,7 @@
     {
         Console.WriteLine("\n--- Меню задач ---");
         Console.WriteLine("1 - Заполнение двумерных массивов");
-        //Console.WriteLine("");
+        Console.WriteLine("2 - Работа с двумерными массивами");
         //Console.WriteLine("");
         Console.WriteLine("0 - Выход");
         Console.WriteLine("------------------");
@@ -89,7 +89,10 @@
         {
             return true;
         }
-        Console.WriteLine("Неверное значение! Ожидалось целое число.");
-        return false;
+        else
+        {
+            Console.WriteLine("Неверное значение! Ожидалось целое число.");
+            return false;
+        }
     }
 }
