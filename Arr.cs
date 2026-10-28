@@ -44,7 +44,35 @@ internal class Arr
         Print();
     }
 
+    // Конструктор для Задания 3
+    public Arr(int n, bool pattern)
+    {
+        Matrix = new int[n, n];
 
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                // Верхний треугольник - нули
+                if (i + j < n - 1)
+                {
+                    Matrix[i, j] = 0;
+                }
+                else
+                {
+                    int layer = (i + j) - (n - 1); // Номер слоя от побочной диагонали
+
+                    if (layer % 2 == 0)
+                        // Четные слои (0, 2, 4...): значение зависит ТОЛЬКО от столбца
+                        Matrix[i, j] = n - j;
+                    else
+                        // Нечетные слои (1, 3...): значение зависит ТОЛЬКО от строки
+                        Matrix[i, j] = n - i;
+                }
+            }
+        }
+        Print();
+    }
 
     private void Print()
     {
