@@ -20,10 +20,11 @@
                     Console.WriteLine("2 - Массив 2 (n × n): Заполняется случайными четырёхзначными числами, состоящими только из нечётных цифр (1, 3, 5, 7, 9)");
                     Console.WriteLine("3 - Массив 3 (n × n): Заполнение по диагоналям");
 
+                    Arr arr = new Arr();
                     string? subchoice;
                     do
                     {
-                        Console.Write("Введите номер подзадачи или 0 для возврата: ");
+                        Console.Write("\nВведите номер подзадачи или 0 для возврата: ");
                         subchoice = Console.ReadLine()?.Trim() ?? "";
 
                         if (subchoice == "1")
@@ -32,7 +33,7 @@
                             {
                                 if (TryReadInt("Введите число столбцов: ", out int m))
                                 {
-                                    Arr arr = new Arr(n, m);
+                                    arr.Arr1(n, m);
                                 }
                             }
                         }
@@ -40,7 +41,7 @@
                         {
                             if (TryReadInt("Введите размерность квадратной матрицы: ", out int n))
                             {
-                                Arr arr = new Arr(n);
+                                arr.Arr2(n);
                             }
                         }
 
@@ -48,18 +49,23 @@
                         {
                             if (TryReadInt("Введите размерность квадратной матрицы: ", out int n))
                             {
-                                Arr arr = new Arr(n);
+                                arr.Arr3(n);
                             }
                         }
 
                         else if (subchoice != "0")
                         {
-                            Console.WriteLine("Неверный выбор");
+                            Console.WriteLine("Неверный выбор! Введите корректный номер массива");
                         }
                     } while (subchoice != "0");
                     break;
 
-                default: Console.WriteLine("Неверный выбор! Введите корректный номер задачи");
+                case "2":
+                    //
+                    break;
+
+                default:
+                    Console.WriteLine("Неверный выбор! Введите корректный номер задачи");
                     break;
 
             }
