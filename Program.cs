@@ -60,24 +60,33 @@
                     break;
 
                 case "2":
+                    Console.WriteLine("В двумерном массиве n х m найдите среднее арифметическое первого столбца и количество элементов в каждом из следующих столбцов превышающих среднее арифметическое предыдущего столбца");
                     Arr arr2 = new Arr(5);
                     arr2.CalculateAndCount();
                     break;
 
                 case "4":
+                    Console.WriteLine("Найти разность max и min элементов заданного файла");
                     FileProcessor.TaskData();
                     break;
 
                 case "5":
+                    Console.WriteLine("Получить название игрушек, цена которых не превышает k руб. и которые подходят детям 5 лет");
                     FileProcessor.TaskToys();
                     break;
 
                 case "6":
+                    Console.WriteLine("Подсчитать количество вхождений max элемента в файл");
                     FileProcessor.TaskTextFileMaxCount();
                     break;
 
                 case "7":
+                    Console.WriteLine("Вычислить количество чётных элементов");
                     FileProcessor.TaskTextFileEvenCount();
+                    break;
+                case "8":
+                    Console.WriteLine("Переписать в другой файл строки, содержащие заданную комбинацию символов");
+                    FileProcessor.TaskFilterLinesBySubstring();
                     break;
 
                 default:
@@ -97,7 +106,7 @@
         Console.WriteLine("5 - Бинарные файлы и структуры");
         Console.WriteLine("6 - Текстовые файлы");
         Console.WriteLine("7 - Текстовые файлы и структуры");
-        //Console.WriteLine("");
+        Console.WriteLine("8 - Текстовый файл");
         Console.WriteLine("0 - Выход");
         Console.WriteLine("------------------");
     }

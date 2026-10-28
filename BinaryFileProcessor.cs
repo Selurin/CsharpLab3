@@ -25,6 +25,23 @@ class FileProcessor
     private const string ToysFilePath = "toys.xml.bin";
     private const string TextFilePath = "numbers.txt";
     private const string TextNumbersFilePath = "numbers_multi.txt";
+    private const string SourceTextFilePath = "source_text.txt";
+    private const string ResultTextFilePath = "filtered_text.txt";
+
+    public static void TaskData()
+    {
+        try
+        {
+            GenerateRandomFile(DataFilePath, 10);
+            double diff = CalculateDifference(DataFilePath);
+            Console.WriteLine($"Результат: {diff}");
+            Console.WriteLine($"Файл сохранен: {DataFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
 
     private static void GenerateRandomFile(string filePath, int count)
     {
@@ -83,6 +100,21 @@ class FileProcessor
         }
     }
 
+    public static void TaskToys()
+    {
+        try
+        {
+            double k = 500;
+            GenerateToysFile(ToysFilePath, 5);
+            FindExpensiveToys(ToysFilePath, k);
+            Console.WriteLine($"Файл сохранен: {ToysFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
+
     private static void GenerateToysFile(string filePath, int count)
     {
         try
@@ -129,6 +161,24 @@ class FileProcessor
             if (!found) Console.WriteLine("  Нет подходящих игрушек.");
         }
         catch (IOException ex) { Console.WriteLine($"Ошибка чтения игрушек: {ex.Message}"); throw; }
+    }
+
+    public static void TaskTextFileMaxCount()
+    {
+        try
+        {
+            GenerateRandomTextFile(TextFilePath, 20);
+
+            var result = CountMaxOccurrences(TextFilePath);
+
+            Console.WriteLine($"Максимальный элемент: {result.Max}");
+            Console.WriteLine($"Количество вхождений: {result.Count}");
+            Console.WriteLine($"Файл сохранен: {TextFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
     }
 
     private static void GenerateRandomTextFile(string filePath, int count)
@@ -194,6 +244,21 @@ class FileProcessor
         }
     }
 
+    public static void TaskTextFileEvenCount()
+    {
+        try
+        {
+            GenerateMultiNumberTextFile(TextNumbersFilePath, 5, 4);
+            int evenCount = CountEvenNumbers(TextNumbersFilePath);
+
+            Console.WriteLine($"Количество чётных элементов: {evenCount}");
+            Console.WriteLine($"Файл сохранен: {TextNumbersFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
     private static void GenerateMultiNumberTextFile(string filePath, int linesCount, int maxNumbersPerLine)
     {
         try
@@ -265,14 +330,26 @@ class FileProcessor
         }
     }
 
-    public static void TaskData()
+    public static void TaskFilterLinesBySubstring()
     {
         try
         {
-            GenerateRandomFile(DataFilePath, 10);
-            double diff = CalculateDifference(DataFilePath);
-            Console.WriteLine($"Результат: {diff}");
-            Console.WriteLine($"Файл сохранен: {DataFilePath}");
+            GenerateSourceTextFile(SourceTextFilePath);
+
+            Console.Write("Введите искомую комбинацию символов: ");
+            string? substring = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(substring))
+            {
+                Console.WriteLine("Ошибка: Искомая подстрока не может быть пустой.");
+                return;
+            }
+
+            int linesCopied = FilterAndCopyLines(SourceTextFilePath, ResultTextFilePath, substring);
+
+            Console.WriteLine($"\nРезультат записан в: {ResultTextFilePath}");
+            Console.WriteLine($"Найдено и переписано строк: {linesCopied}");
+            Console.WriteLine($"Исходный файл сохранен: {SourceTextFilePath}");
         }
         catch (Exception ex)
         {
@@ -280,52 +357,73 @@ class FileProcessor
         }
     }
 
-    public static void TaskToys()
+    private static void GenerateSourceTextFile(string filePath)
     {
         try
         {
-            double k = 500;
-            GenerateToysFile(ToysFilePath, 5);
-            FindExpensiveToys(ToysFilePath, k);
-            Console.WriteLine($"Файл сохранен: {ToysFilePath}");
+            Random rand = new Random();
+
+            string[] beginnings = { "Сегодня ", "Вчера ", "На уроке ", "Студенты ", "Программисты " };
+            string[] middles = {
+            "изучали информатику и выполняли задания по формам данных, ",
+            "работали с деформацией массивов и форматированием вывода, ",
+            "решали задачи про метаморфозы в алгоритмах, ",
+            "анализировали информационные потоки без особых формальностей, ",
+            "просто писали код без всяких дополнительных условий "
+        };
+            string[] endings = { "и получили хороший результат.", "это было непросто.", "все справились!", "" };
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                int linesCount = rand.Next(8, 13);
+
+                for (int i = 0; i < linesCount; i++)
+                {
+                    string line = $"{beginnings[rand.Next(beginnings.Length)]}" +
+                                  $"{middles[rand.Next(middles.Length)]}" +
+                                  $"{endings[rand.Next(endings.Length)]}";
+
+                    writer.WriteLine(line.Trim());
+                }
+            }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+            Console.WriteLine($"Ошибка создания файла: {ex.Message}");
+            throw;
         }
     }
 
-    public static void TaskTextFileMaxCount()
+
+    private static int FilterAndCopyLines(string sourcePath, string resultPath, string substring)
     {
         try
         {
-            GenerateRandomTextFile(TextFilePath, 20);
+            if (!File.Exists(sourcePath))
+                throw new FileNotFoundException("Исходный файл не найден", sourcePath);
 
-            var result = CountMaxOccurrences(TextFilePath);
+            int count = 0;
 
-            Console.WriteLine($"Максимальный элемент: {result.Max}");
-            Console.WriteLine($"Количество вхождений: {result.Count}");
-            Console.WriteLine($"Файл сохранен: {TextFilePath}");
+            using (StreamReader reader = new StreamReader(sourcePath))
+            using (StreamWriter writer = new StreamWriter(resultPath))
+            {
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.IndexOf(substring, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        writer.WriteLine(line);
+                        count++;
+                    }
+                }
+            }
+
+            return count;
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
-        }
-    }
-
-    public static void TaskTextFileEvenCount()
-    {
-        try
-        {
-            GenerateMultiNumberTextFile(TextNumbersFilePath, 5, 4);
-            int evenCount = CountEvenNumbers(TextNumbersFilePath);
-
-            Console.WriteLine($"Количество чётных элементов: {evenCount}");
-            Console.WriteLine($"Файл сохранен: {TextNumbersFilePath}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+            Console.WriteLine($"Ошибка обработки файлов: {ex.Message}");
+            throw;
         }
     }
 }
