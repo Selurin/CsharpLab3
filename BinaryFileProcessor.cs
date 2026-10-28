@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
-using System.Collections.Generic;
+
 
 [Serializable]
 public struct Toy
@@ -23,8 +21,8 @@ public struct Toy
 
 class BinaryFileProcessor
 {
-    private const string FilePath = "data.bin";
-    private const int NumbersCount = 10;
+    private const string DataFilePath = "data.bin";
+    private const string ToysFilePath = "toys.xml.bin";
 
     public static void GenerateRandomFile(string filePath, int count)
     {
@@ -131,25 +129,34 @@ class BinaryFileProcessor
         catch (IOException ex) { Console.WriteLine($"Ошибка чтения игрушек: {ex.Message}"); throw; }
     }
 
-    public static void MainProcess()
+    public static void TaskNumbers()
     {
-        const string dataFile = "data.bin";
-        const string toysFile = "toys.xml.bin";
-
         try
         {
-            Console.WriteLine("=== Задача 1: Разность max/min ===");
-            GenerateRandomFile(dataFile, 10);
-            Console.WriteLine($"Разность: {CalculateDifference(dataFile)}\n");
-
-            Console.WriteLine("=== Задача 2: Дорогие игрушки ===");
-            GenerateToysFile(toysFile, 5);
-            FindExpensiveToys(toysFile, 500);
+            GenerateRandomFile(DataFilePath, 10);
+            double diff = CalculateDifference(DataFilePath);
+            Console.WriteLine($"Результат: {diff}");
+            Console.WriteLine($"Файл сохранен: {DataFilePath}");
         }
-        catch (Exception ex) { Console.WriteLine($"Критическая ошибка: {ex.Message}"); }
-        finally
+        catch (Exception ex)
         {
-            Console.WriteLine("\nВременные файлы удалены.");
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
+
+    public static void TaskToys()
+    {
+        try
+        {
+            // Можно сделать k параметром, если нужно, или константой
+            double k = 500;
+            GenerateToysFile(ToysFilePath, 5);
+            FindExpensiveToys(ToysFilePath, k);
+            Console.WriteLine($"Файл сохранен: {ToysFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
         }
     }
 }
