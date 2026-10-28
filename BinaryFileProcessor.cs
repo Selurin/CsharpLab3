@@ -16,7 +16,7 @@ class BinaryFileProcessor
             {
                 for (int i = 0; i < count; i++)
                 {
-                    writer.Write(random.Next(-100, 101));
+                    writer.Write((double)random.Next(-100, 101));
                 }
             }
         }
