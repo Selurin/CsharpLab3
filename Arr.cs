@@ -2,10 +2,31 @@
 
 internal class Arr
 {
+    public int[,] Matrix;
+
+    public Arr()
+    {
+        Console.Write("Введите количество строк (n): ");
+        int n = int.Parse(Console.ReadLine());
+        Console.Write("Введите количество столбцов (m): ");
+        int m = int.Parse(Console.ReadLine());
+
+        Matrix = new int[n, m];
+        Console.WriteLine($"Введите {n * m} чисел:");
+
+        for (int j = 0; j < m; j++)
+        {
+            for (int i = n - 1; i >= 0; i--)
+            {
+                Matrix[i, j] = int.Parse(Console.ReadLine());
+            }
+        }
+        Print();
+    }
+
     public Arr(int n)
     {
-        int[,] matrix = new int[n, n];
-
+        Matrix = new int[n, n];
         int[] oddDigits = { 1, 3, 5, 7, 9 };
         Random rand = new Random();
 
@@ -13,20 +34,27 @@ internal class Arr
         {
             for (int j = 0; j < n; j++)
             {
-                int digit1 = oddDigits[rand.Next(oddDigits.Length)];
-                int digit2 = oddDigits[rand.Next(oddDigits.Length)];
-                int digit3 = oddDigits[rand.Next(oddDigits.Length)];
-                int digit4 = oddDigits[rand.Next(oddDigits.Length)];
-
-                matrix[i, j] = digit1 * 1000 + digit2 * 100 + digit3 * 10 + digit4;
+                int d1 = oddDigits[rand.Next(oddDigits.Length)];
+                int d2 = oddDigits[rand.Next(oddDigits.Length)];
+                int d3 = oddDigits[rand.Next(oddDigits.Length)];
+                int d4 = oddDigits[rand.Next(oddDigits.Length)];
+                Matrix[i, j] = d1 * 1000 + d2 * 100 + d3 * 10 + d4;
             }
         }
+        Print();
+    }
 
-        for (int i = 0; i < n; i++)
+
+
+    private void Print()
+    {
+        int rows = Matrix.GetLength(0);
+        int cols = Matrix.GetLength(1);
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < n; j++)
+            for (int j = 0; j < cols; j++)
             {
-                Console.Write(matrix[i, j] + "\t");
+                Console.Write(Matrix[i, j] + "\t");
             }
             Console.WriteLine();
         }
