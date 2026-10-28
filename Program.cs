@@ -76,6 +76,10 @@
                     FileProcessor.TaskTextFileMaxCount();
                     break;
 
+                case "7":
+                    FileProcessor.TaskTextFileEvenCount();
+                    break;
+
                 default:
                     Console.WriteLine("Неверный выбор! Введите корректный номер задачи");
                     break;
@@ -92,6 +96,7 @@
         Console.WriteLine("4 - Бинарные файлы");
         Console.WriteLine("5 - Бинарные файлы и структуры");
         Console.WriteLine("6 - Текстовые файлы");
+        Console.WriteLine("7 - Текстовые файлы и структуры");
         //Console.WriteLine("");
         Console.WriteLine("0 - Выход");
         Console.WriteLine("------------------");

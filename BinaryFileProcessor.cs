@@ -194,6 +194,77 @@ class FileProcessor
         }
     }
 
+    private static void GenerateMultiNumberTextFile(string filePath, int linesCount, int maxNumbersPerLine)
+    {
+        try
+        {
+            Random rand = new Random();
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                for (int i = 0; i < linesCount; i++)
+                {
+                    int numbersInLine = rand.Next(1, maxNumbersPerLine + 1);
+                    var lineNumbers = new List<int>();
+
+                    for (int j = 0; j < numbersInLine; j++)
+                    {
+                        lineNumbers.Add(rand.Next(-100, 101));
+                    }
+
+                    writer.WriteLine(string.Join(";", lineNumbers));
+                }
+            }
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Ошибка записи файла: {ex.Message}");
+            throw;
+        }
+    }
+
+    private static int CountEvenNumbers(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("Файл не найден", filePath);
+
+            int evenCount = 0;
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    line = line.Trim();
+                    if (string.IsNullOrEmpty(line)) continue;
+
+                    string[] parts = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string part in parts)
+                    {
+                        if (int.TryParse(part.Trim(), out int num))
+                        {
+                            if (num % 2 == 0)
+                                evenCount++;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"️ Пропущено некорректное значение: \"{part}\"");
+                        }
+                    }
+                }
+            }
+
+            return evenCount;
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Ошибка чтения файла: {ex.Message}");
+            throw;
+        }
+    }
+
     public static void TaskData()
     {
         try
@@ -226,7 +297,6 @@ class FileProcessor
 
     public static void TaskTextFileMaxCount()
     {
-        Console.WriteLine("\n=== Задача 6: Вхождения максимума в текстовом файле ===");
         try
         {
             GenerateRandomTextFile(TextFilePath, 20);
@@ -236,6 +306,22 @@ class FileProcessor
             Console.WriteLine($"Максимальный элемент: {result.Max}");
             Console.WriteLine($"Количество вхождений: {result.Count}");
             Console.WriteLine($"Файл сохранен: {TextFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
+
+    public static void TaskTextFileEvenCount()
+    {
+        try
+        {
+            GenerateMultiNumberTextFile(TextNumbersFilePath, 5, 4);
+            int evenCount = CountEvenNumbers(TextNumbersFilePath);
+
+            Console.WriteLine($"Количество чётных элементов: {evenCount}");
+            Console.WriteLine($"Файл сохранен: {TextNumbersFilePath}");
         }
         catch (Exception ex)
         {
