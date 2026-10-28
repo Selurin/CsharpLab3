@@ -24,8 +24,9 @@ class FileProcessor
     private const string DataFilePath = "data.bin";
     private const string ToysFilePath = "toys.xml.bin";
     private const string TextFilePath = "numbers.txt";
+    private const string TextNumbersFilePath = "numbers_multi.txt";
 
-    public static void GenerateRandomFile(string filePath, int count)
+    private static void GenerateRandomFile(string filePath, int count)
     {
         try
         {
@@ -45,7 +46,7 @@ class FileProcessor
         }
     }
 
-    public static double CalculateDifference(string filePath)
+    private static double CalculateDifference(string filePath)
     {
         try
         {
@@ -82,7 +83,7 @@ class FileProcessor
         }
     }
 
-    public static void GenerateToysFile(string filePath, int count)
+    private static void GenerateToysFile(string filePath, int count)
     {
         try
         {
@@ -104,7 +105,7 @@ class FileProcessor
         catch (IOException ex) { Console.WriteLine($"Ошибка записи игрушек: {ex.Message}"); throw; }
     }
 
-    public static void FindExpensiveToys(string filePath, double k)
+    private static void FindExpensiveToys(string filePath, double k)
     {
         try
         {
@@ -130,6 +131,69 @@ class FileProcessor
         catch (IOException ex) { Console.WriteLine($"Ошибка чтения игрушек: {ex.Message}"); throw; }
     }
 
+    private static void GenerateRandomTextFile(string filePath, int count)
+    {
+        try
+        {
+            Random rand = new Random();
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    writer.WriteLine(rand.Next(-50, 51));
+                }
+            }
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Ошибка записи текстового файла: {ex.Message}");
+            throw;
+        }
+    }
+
+    private static (int Max, int Count) CountMaxOccurrences(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("Текстовый файл не найден", filePath);
+
+            List<int> numbers = new List<int>();
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    line = line.Trim();
+                    if (string.IsNullOrEmpty(line)) continue;
+
+                    if (int.TryParse(line, out int num))
+                    {
+                        numbers.Add(num);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"️ Пропущена некорректная строка: \"{line}\"");
+                    }
+                }
+            }
+
+            if (numbers.Count == 0)
+                throw new InvalidOperationException("Файл не содержит корректных чисел");
+
+            int max = numbers.Max();
+            int count = numbers.Count(n => n == max);
+
+            return (max, count);
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Ошибка чтения текстового файла: {ex.Message}");
+            throw;
+        }
+    }
+
     public static void TaskData()
     {
         try
@@ -153,6 +217,25 @@ class FileProcessor
             GenerateToysFile(ToysFilePath, 5);
             FindExpensiveToys(ToysFilePath, k);
             Console.WriteLine($"Файл сохранен: {ToysFilePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка выполнения задачи: {ex.Message}");
+        }
+    }
+
+    public static void TaskTextFileMaxCount()
+    {
+        Console.WriteLine("\n=== Задача 6: Вхождения максимума в текстовом файле ===");
+        try
+        {
+            GenerateRandomTextFile(TextFilePath, 20);
+
+            var result = CountMaxOccurrences(TextFilePath);
+
+            Console.WriteLine($"Максимальный элемент: {result.Max}");
+            Console.WriteLine($"Количество вхождений: {result.Count}");
+            Console.WriteLine($"Файл сохранен: {TextFilePath}");
         }
         catch (Exception ex)
         {
