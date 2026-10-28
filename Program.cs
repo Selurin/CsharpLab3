@@ -68,6 +68,10 @@
                     BinaryFileProcessor.MainProcess();
                     break;
 
+                case "5":
+                    //
+                    break;
+
                 default:
                     Console.WriteLine("Неверный выбор! Введите корректный номер задачи");
                     break;
@@ -82,6 +86,7 @@
         Console.WriteLine("1 - Заполнение двумерных массивов");
         Console.WriteLine("2 - Работа с двумерными массивами");
         Console.WriteLine("4 - Бинарные файлы");
+        Console.WriteLine("5 - Бинарные файлы и структуры");
         //Console.WriteLine("");
         Console.WriteLine("0 - Выход");
         Console.WriteLine("------------------");
