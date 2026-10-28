@@ -64,6 +64,10 @@
                     arr2.CalculateAndCount();
                     break;
 
+                case "4":
+                    BinaryFileProcessor.MainProcess();
+                    break;
+
                 default:
                     Console.WriteLine("Неверный выбор! Введите корректный номер задачи");
                     break;
@@ -77,6 +81,7 @@
         Console.WriteLine("\n--- Меню задач ---");
         Console.WriteLine("1 - Заполнение двумерных массивов");
         Console.WriteLine("2 - Работа с двумерными массивами");
+        Console.WriteLine("4 - Бинарные файлы");
         //Console.WriteLine("");
         Console.WriteLine("0 - Выход");
         Console.WriteLine("------------------");
