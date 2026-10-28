@@ -65,11 +65,11 @@
                     break;
 
                 case "4":
-                    BinaryFileProcessor.TaskNumbers();
+                    FileProcessor.TaskData();
                     break;
 
                 case "5":
-                    BinaryFileProcessor.TaskToys();
+                    FileProcessor.TaskToys();
                     break;
 
                 default:

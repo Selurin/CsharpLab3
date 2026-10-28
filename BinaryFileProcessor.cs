@@ -19,10 +19,11 @@ public struct Toy
     }
 }
 
-class BinaryFileProcessor
+class FileProcessor
 {
     private const string DataFilePath = "data.bin";
     private const string ToysFilePath = "toys.xml.bin";
+    private const string TextFilePath = "numbers.txt";
 
     public static void GenerateRandomFile(string filePath, int count)
     {
@@ -129,7 +130,7 @@ class BinaryFileProcessor
         catch (IOException ex) { Console.WriteLine($"Ошибка чтения игрушек: {ex.Message}"); throw; }
     }
 
-    public static void TaskNumbers()
+    public static void TaskData()
     {
         try
         {
@@ -148,7 +149,6 @@ class BinaryFileProcessor
     {
         try
         {
-            // Можно сделать k параметром, если нужно, или константой
             double k = 500;
             GenerateToysFile(ToysFilePath, 5);
             FindExpensiveToys(ToysFilePath, k);
