@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 internal class Arr
 {
@@ -44,7 +45,7 @@ internal class Arr
             }
             if (isExit) break;
         }
-        Print();
+        ToString();
     }
 
     public Arr(int n)
@@ -64,7 +65,7 @@ internal class Arr
                 _matrix[i, j] = d1 * 1000 + d2 * 100 + d3 * 10 + d4;
             }
         }
-        Print();
+        ToString();
     }
 
     public Arr(int n, string pattern)
@@ -90,7 +91,7 @@ internal class Arr
                 }
             }
         }
-        Print();
+        ToString();
     }
 
     public void CalculateAndCount()
@@ -137,14 +138,109 @@ internal class Arr
         }
     }
 
-    private void Print()
+    public Arr Transpose()
     {
-        if (_matrix == null)
+        int rows = _matrix.GetLength(0);
+        int cols = _matrix.GetLength(1);
+        int[,] transposed = new int[cols, rows];
+
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                transposed[j, i] = _matrix[i, j];
+
+        Arr result = new Arr();
+        result._matrix = transposed;
+        return result;
+    }
+
+    public Arr Subtract(Arr other)
+    {
+        int r1 = _matrix.GetLength(0), c1 = _matrix.GetLength(1);
+        int r2 = other._matrix.GetLength(0), c2 = other._matrix.GetLength(1);
+
+        if (r1 != r2 || c1 != c2)
         {
-            Console.WriteLine("Матрица пуста!");
-            return;
+            Console.WriteLine("Ошибка: размеры матриц для вычитания не совпадают!");
+            return new Arr();
         }
 
+        int[,] res = new int[r1, c1];
+        for (int i = 0; i < r1; i++)
+            for (int j = 0; j < c1; j++)
+                res[i, j] = _matrix[i, j] - other._matrix[i, j];
+
+        Arr result = new Arr();
+        result._matrix = res;
+        return result;
+    }
+
+    public Arr MultiplyByScalar(int scalar)
+    {
+        int rows = _matrix.GetLength(0);
+        int cols = _matrix.GetLength(1);
+        int[,] res = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                res[i, j] = _matrix[i, j] * scalar;
+
+        Arr result = new Arr();
+        result._matrix = res;
+        return result;
+    }
+
+ 
+    public Arr Multiply(Arr other)
+    {
+        int r1 = _matrix.GetLength(0), c1 = _matrix.GetLength(1);
+        int r2 = other._matrix.GetLength(0), c2 = other._matrix.GetLength(1);
+
+        if (c1 != r2)
+        {
+            Console.WriteLine("Ошибка: нельзя умножить (столбцы первой != строки второй)");
+            return new Arr();
+        }
+
+        int[,] res = new int[r1, c2];
+        for (int i = 0; i < r1; i++)
+            for (int j = 0; j < c2; j++)
+                for (int k = 0; k < c1; k++)
+                    res[i, j] += _matrix[i, k] * other._matrix[k, j];
+
+        Arr result = new Arr();
+        result._matrix = res;
+        return result;
+    }
+
+    public static Arr CalculateExpression(Arr A, Arr B, Arr C)
+    {
+        Console.WriteLine("\n--- Расчет выражения 7 * A * (B^T - C) ---");
+
+        Arr BT = B.Transpose();
+        Console.WriteLine("B транспонированная:");
+        Console.WriteLine(BT.ToString());
+
+        Arr diff = BT.Subtract(C);
+        Console.WriteLine("(B^T - C):");
+        Console.WriteLine(diff.ToString());
+
+        Arr scaled = diff.MultiplyByScalar(7);
+        Console.WriteLine("7 * (B^T - C):");
+        Console.WriteLine(scaled.ToString());
+
+        Arr result = A.Multiply(scaled);
+        Console.WriteLine("Итоговый результат (A * ...):");
+        Console.WriteLine(result.ToString());
+
+        return result;
+    }
+
+
+    public override string ToString()
+    {
+        if (_matrix == null) return "Матрица пуста";
+
+        StringBuilder sb = new StringBuilder();
         int rows = _matrix.GetLength(0);
         int cols = _matrix.GetLength(1);
 
@@ -152,9 +248,10 @@ internal class Arr
         {
             for (int j = 0; j < cols; j++)
             {
-                Console.Write($"{_matrix[i, j],-6}");
+                sb.Append($"{_matrix[i, j],-6}");
             }
-            Console.WriteLine();
+            sb.AppendLine();
         }
+        return sb.ToString();
     }
 }

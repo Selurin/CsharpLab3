@@ -65,6 +65,35 @@
                     arr2.CalculateAndCount();
                     break;
 
+                case "3":
+                    Console.WriteLine("Расчет 7 * A * (B^T - C)");
+
+                    int[,] dataA = new int[3, 2]
+                    {
+                        {1, 2},
+                        {3, -1},
+                        {5, 6}
+                    };
+                    Arr A = new Arr(dataA);
+
+                    int[,] dataB = new int[3, 2]
+                    {
+                        {7, 8},
+                        {9, 10},
+                        {-1, 12}
+                    };
+                    Arr B = new Arr(dataB);
+
+                    int[,] dataC = new int[2, 3]
+                    {
+                        {1, -3, 1},
+                        {2, 1, 4},
+                    };
+                    Arr C = new Arr(dataC);
+
+                    Arr.CalculateExpression(A, B, C);
+
+                    break;
                 case "4":
                     Console.WriteLine("Найти разность max и min элементов заданного файла");
                     FileProcessor.TaskData();
@@ -102,6 +131,7 @@
         Console.WriteLine("\n--- Меню задач ---");
         Console.WriteLine("1 - Заполнение двумерных массивов");
         Console.WriteLine("2 - Работа с двумерными массивами");
+        Console.WriteLine("3 - Работа с двумерными массивами как с матрицами");
         Console.WriteLine("4 - Бинарные файлы");
         Console.WriteLine("5 - Бинарные файлы и структуры");
         Console.WriteLine("6 - Текстовые файлы");
