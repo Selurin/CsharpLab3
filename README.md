@@ -43,6 +43,31 @@
 <img width="1562" height="411" alt="image" src="https://github.com/user-attachments/assets/de70ac87-4a3b-4c56-b52d-dd4a3c0f5c04" />
 
 ---
+## Задание 3: Работа с двумерными массивами как с матрицами
+
+### Текст задачи
+Выполнить расчет выражения $7 \cdot A \cdot (B^T - C)$, где $A$, $B$ и $C$ — заданные целочисленные матрицы, а $B^T$ — транспонированная матрица $B$.
+
+### Алгоритм решения
+В класс `Arr` добавлены методы для выполнения базовых матричных операций:
+1. `Transpose()`: создает новую матрицу, меняя местами строки и столбцы исходной ($M[j, i] = M[i, j]$).
+2. `Subtract(Arr other)`: выполняет поэлементное вычитание двух матриц одинаковой размерности.
+3. `Multiply(Arr other)`: реализует алгоритм умножения матриц (строка на столбец) с проверкой совместимости размерностей.
+4. `MultiplyByScalar(int scalar)`: умножает каждый элемент матрицы на скаляр.
+5. Статический метод `CalculateExpression(Arr A, Arr B, Arr C)` последовательно вызывает эти методы для получения итогового результата.
+
+### Тестирование
+Программа успешно выполнила все этапы вычислений: транспонирование матрицы B, вычитание матрицы C, умножение на матрицу A и финальное умножение на скаляр 7. Результат выведен в консоль.
+
+<img width="429" height="324" alt="image" src="https://github.com/user-attachments/assets/92ee156e-0b8d-4185-87b2-2e1b45da4e3a" />
+<br>
+<img width="396" height="126" alt="image" src="https://github.com/user-attachments/assets/72305478-e66c-42a9-ac8d-ad713d895620" />
+<img width="526" height="118" alt="image" src="https://github.com/user-attachments/assets/2b17873f-a5be-4811-bbfa-4a6f26b11e44" />
+<img width="490" height="133" alt="image" src="https://github.com/user-attachments/assets/3cd5e2f6-cc9a-4b34-865a-bfff836e442f" />
+<img width="435" height="132" alt="image" src="https://github.com/user-attachments/assets/33ae5608-0701-4926-9236-a5f8752970d4" />
+
+
+---
 
 # Задание 4. Бинарные файлы
 
