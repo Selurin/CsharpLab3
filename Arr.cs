@@ -214,8 +214,6 @@ internal class Arr
 
     public static Arr CalculateExpression(Arr A, Arr B, Arr C)
     {
-        Console.WriteLine("\n--- Расчет выражения 7 * A * (B^T - C) ---");
-
         Arr BT = B.Transpose();
         Console.WriteLine("B транспонированная:");
         Console.WriteLine(BT.ToString());
@@ -224,12 +222,12 @@ internal class Arr
         Console.WriteLine("(B^T - C):");
         Console.WriteLine(diff.ToString());
 
-        Arr scaled = diff.MultiplyByScalar(7);
-        Console.WriteLine("7 * (B^T - C):");
-        Console.WriteLine(scaled.ToString());
+        Arr multyA = A.Multiply(diff);
+        Console.WriteLine("A * (B^T - C):");
+        Console.WriteLine(multyA.ToString());
 
-        Arr result = A.Multiply(scaled);
-        Console.WriteLine("Итоговый результат (A * ...):");
+        Arr result = multyA.MultiplyByScalar(7);
+        Console.WriteLine("Итоговый результат (7 * ...):");
         Console.WriteLine(result.ToString());
 
         return result;
